@@ -29,7 +29,7 @@ Students use these documents in my class so they can produce their graphics and 
 * The white space is where they will type things meant for humans to read.
 * The gray space is where they will type things meant for computers to interpret.
 
-I set up a majority of the lab document for students in terms of the coding. Students work with the `.Rmnd` to edit the file and create their work, but they will "Knit" the document periodically to see what it looks like and to run the code Chunks. Knitting a R Markdown file generates a new file (typically an HTML or PDF file). The navigation bar for this file has a Knit button. If you click it, then it will generate the specified file. 
+I set up a majority of the lab document for students in terms of the coding. Students work with the `.Rmd` to edit the file and create their work, but they will "Knit" the document periodically to see what it looks like and to run the code Chunks. Knitting a R Markdown file generates a new file (typically an HTML or PDF file). The navigation bar for this file has a Knit button. If you click it, then it will generate the specified file. 
 
 > **TA Comment**: During my labs, I guide the students to click the little gear icon next to the Knit button to select `Preview in the Viewer Pane`, so they can see the document they are editing side by side with the knitted document. If a student is frustrated because the document is opening in a new window, then the issue is that the `Preview in the Viewer Pane` option hasn't been selected.
 
