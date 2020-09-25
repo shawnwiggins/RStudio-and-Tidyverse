@@ -1,0 +1,230 @@
+---
+title: "RStudio and Tidyverse Workshop Demo (Complete)"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Shawn Wiggins <br>
+City College of San Francisco <br>
+September 25, 2020
+
+> **TA Comment**: At the start of the workshop, you'll be asked to run the R script `Workshop Start.R` which installs the tools we need since RStudio Cloud essentially starts fresh each time a project is opened for the first time. The command in the script is: `install.packages(c("knitr", "rmarkdown", "tidyverse", "tinytex"), dependencies = TRUE)`.
+
+## R Markdown
+
+<center>
+  <img src="https://d33wubrfki0l68.cloudfront.net/aee91187a9c6811a802ddc524c3271302893a149/a7003/images/bandthree2.png" width = 50%>
+</center>
+
+[R Markdown](https://rmarkdown.rstudio.com/)  documents are files indicated by the `.Rmd` file extension. These documents combine executable R code with human readable text. This document is an R Markdown document.
+
+### Student Interaction
+
+Students use these documents in my class so they can produce their graphics and calculations in the same document where they get their instructions and write their results. The basic things I tell my students are
+
+* The white space is where they will type things meant for humans to read.
+* The gray space is where they will type things meant for computers to interpret.
+
+I set up a majority of the lab document for students in terms of the coding. Students work with the `.Rmnd` to edit the file and create their work, but they will "Knit" the document periodically to see what it looks like and to run the code Chunks. Knitting a R Markdown file generates a new file (typically an HTML or PDF file). The navigation bar for this file has a Knit button. If you click it, then it will generate the specified file. 
+
+> **TA Comment**: During my labs, I guide the students to click the little gear icon next to the Knit button to select `Preview in the Viewer Pane`, so they can see the document they are editing side by side with the knitted document. If a student is frustrated because the document is opening in a new window, then the issue is that the `Preview in the Viewer Pane` option hasn't been selected.
+
+Let's see what this document looks like. I'm going to make sure to click the little gear icon next to the Knit button to select `Preview in the Viewer Pane`. After that I'll click the Knit button. The document should load in the Viewer pane on the right-hand side.
+
+The space below is an example of one of the gray spaces called code Chunks. There are several ways to add a code Chunk. From the menu bar, Code $\rightarrow$ Insert Chunk will do the trick.
+
+```{r}
+# This is a comment in a code Chunk. The # symbol makes sure the computer doesn't try to run this text as a command.
+
+
+```
+
+
+> **TA Comment**: In my labs, students can customize their white space text with the features of HTML, Markdown, etc if they want to, but the labs just require plain text responses just like this. The students will either copy and paste code from the lab's Demo session notebook or replace a few words when interacting withe code Chunks.
+
+> **TA Comment**: One error students will have is due the backticks \```{r} or ``` missing. You'll notice this visually as the grey area will continue longer than it should.
+
+## Tidyverse
+
+<center>
+  <img src="https://lsru.github.io/tv_course/img/01_tidyverse_components.png" width = 50%>
+</center> <br>
+
+The [Tidyverse](https://www.tidyverse.org/) is a collection of R packages designed to analyze data and reduce a lot of the complexities involved with working with the base R language and a large collection of packages that are created with mismatching data structures.
+
+### Student Interaction
+
+> **TA Comment**: If a student is having issues with their code, make sure that the Tidyverse has been installed and loaded. The following code loads the Tidyverse: `library(tidyverse)`
+
+The following code Chunk will load the Tidyverse. You should see a list of the Tidyverse packages that are now available for use.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+## EDA, Sampling, and Inference Demo
+
+Know that you know how to knit an R Markdown file and load the Tidyverse, let's use these tools to 
+
+* Summarize the distribution of a quantitative variable.
+* Gather a simple random sample from a population.
+* Perform a hypothesis test using the sample data.
+
+### The Data
+
+The FIFA series is a popular collection of soccer simulation video games. I've collected the soccer player stats for FIFA 20 game from the popular data site [kaggle](https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset). 
+
+#### Student Interaction
+
+MATH 80 is about exploring data and performing statistical inference, not about preparing and transforming data. One exception is that the course studies the 1.5 IQR method for detecting outliers, so I will have them use that method in the labs to find outliers. 
+
+I prepare the labs, so the students see the data initially in tabular form where each column represents a variable and each row represents an individual in the data set with the except of the first row which contains the variable name. The name for these table data structures in the Tidyverse is Tibble.
+
+In the following code Chunk, I will get the data from the internet and safe it as a Tibble called `FIFA`.
+
+```{r, message=FALSE}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: I'd like for you to notice two things in the above code Chunk. The operation `<-` is R's assignment operator. What is happening is that `read_csv` is gathering the data form the internet and creating a Tidyverse Tibble. I'm assigning that Tibble to the name `FIFA20`. Students can sometimes have a tought time distinguishing between names and commands. 
+
+Now, this data set has a lot of information. I'll use the following command to see all of the variable names for this data set.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: I ask the students to view the variable names at the beginning of the lab, so they can see exactly how the names are written. This is really important because most of their coding work is just replacing variables that I used in the labs with other variable names.
+
+> **TA Comment**: I want you to notice another special operator in the above code Chunk. The operator `%>%` is called the pipe. This is one of the major ways that Tidyverse is different than the base R commands. Piping is known to create a more intuitive workflow. You send information through a pipe and transform it along the way. So, in the above command, I took all the `FIFA20` data and piped it to the `variable.names()` function to reveal the variable names in that particular data set.
+
+Now, I'll use the pipe and assignment operators to create a smaller data set with just a few variables. I would normally do this prior to the student's lab assignment, but I think it is important for you to understand what those two operators do. You should see that I take the `FIFA20` data, pipe it to select the certain variables I want to look at, and assign that information to the name `FIFA20_demo`.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+Another thing that I have students do is preview the data. I'll type the name of the Tibble to preview the data. 
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: By default, the first 10 rows of the Tibble are are shown, but you should notice that the first line reads A tibble: 18,279 x 3. This indicates that this Tibble has 18,278 rows of data and 3 columns/variables.
+
+
+### Exploratory Data Analysis
+
+In the beginning of the semester, students are exploring data sets. They are learning to summarize data numerically and graphically. I'm going to continue by summarizing the distribution of a single quantitative variable and a $C \rightarrow Q$ relationship between two variables.
+
+#### Summarizing `age`
+
+The variable `age` contains the ages of all the soccer players. I'll visualize the distribution of this variable with a histogram and a boxplot using the `ggplot2` package from the Tidyverse.
+
+##### Boxplot
+
+The following code Chunk creats a boxplot.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: There is a typical structure to the code Chunks that create graphics in Tidyverse. The function `ggplot()` creates the coordinate system. In a typical use, the input is the data set. Here that data is the Tibble `FIFA20_demo`. Next, you should see the + symbol which means you are adding layers to that coordinate system. Much like the pipe operator, you can just keep adding layers by adding (+) new layers. The geom() function is the mapping function that determines what kind of graph will be produced. Here `geom_boxplot()` creates a boxplot. A typical input is `aes()` which deterins the variable assignment to the axes. In this case, `age` is assigned to the horizontal axis. Finally, I add a title layer to the graph with the `ggtitle()` function.
+
+##### Histogram
+
+With a quick edit to this graph code, I'll create a histogram in the following code Chunk. I'll make the bin width set to 1 year.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+##### Mean, Median, Standard Deviation, and IQR
+
+There are huge collection of functions available to obtain all of the numerical summaries presented to our students. In the following code chunk I'll pipe the data into the summarize function that will calculate the common measures of center and spread for the ages.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: Here is a moment where I defined the name `mean` to the mean value, but `mean` was also the function name. Students are unsure of which they can or should change.
+
+#### Relating `preffered_foot` and `age`
+
+Let's see if there is a meaningful relationship between the preferred foot of the player and their age.
+
+##### Side-By-Side Boxplots
+
+The OLI textbook instructs students to use side-by-side boxplots to visualize $C \rightarrow Q$ relationships. The following code Chunk should look similar to the above boxplot command, but using a categorical variable will automatically generate multiple boxplots.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+Next, I'll calculate the mean and median age for each explanatory value. I'll group the `FIFA20_demo` data by the `preffered_foot` variable and summarize as before.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+The difference in the mean age is 0.1 years. That seems pretty small. Based on the visualization and the difference in measure of center, there doesn't seem to be a meaningful relationship between these variables. 
+
+> **TA Comment**: These code chunks can be intuitive if you have a background on the notation, etc. Since I don't assume that about the students or have class time to teach them a lot of details, they are instructed to just copy and paste what I did in the demo lab and change the variables names. The focus is really on their opinions and summaries that the form from picking out and summarizing the data. If there are going to have an issue here, it will be with typing the variable names incorrectly or not know which words are variables.
+
+### Sampling
+
+The students in MATH 80 spend a little bit of time on sampling methods. The simple random sample is the foundation method. How can they implement that with R? They can use the `sample_n()` function which generates random samples from some collection where you can specify sampling with or without replacement and the sample size.
+
+Let's consider `FIFA20_demo` to be the population data. The following code will generate a simple random sample of size 35 players without replacement. We'll use the in the inference section to test a hypothesis. So, let's save that sample as `FIFA20_demo_sample` and preview it.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: I can lock in a random sample for grading/comparision purposes with the `set.seed()` function. We could remove that statement to give the students a better idea of how different samples look and behave.
+
+### Inference
+
+Let's conclude the workshop by running a couple of $t$-tests.
+
+#### One-Sample $t$-Test
+
+In the previous section, I obtained a random sample of $n = 100$ soccer players from the population of size $N = 18,278$. The population mean age was calculated to be $\mu = 25.3$. Let's see how good of job the random sample's mean $\overline{x}$ does at estimating that population mean.
+
+The following code Chunk will run a two-tailed $t$-test on the sample data with a null hypothesis $\mu = 25.3$ and a confidence level of 95%.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+The test produced a 95% confidence interval estimate for $\mu$ of $(24.24604, 26.05396)$ years. With a $p$-value of 74.27%, this sample average of $\overline{x} = 25.1$ years did a great job at estimate the population's mean using just over 0.5% of the total players, but we knew that would happen! 😇
+
+> **TA Comment**: I'll be working with the students to do one sample tests mostly manually, so they can take their time understanding the strucutre of the confidence intervals and the process of the tests. There will be some tasks where I direct them to tuse the `t.test()` function just so they could focus on reading the results and coming to some conclusion.
+
+#### Two-Sample $t$-Test
+
+Lastly, I'll quickly verify that our feeling was right that there is no relationship between the preferred foot of the player and their age. The following calculation will test for a non-zero difference in the ages of the players when separated by the two values of `preferred_foot`. Noteice that I'll the entire data for this test. If there were anymore values in the explanatory variable, I'd need to look at using an ANOVA test.
+
+```{r}
+# Replace this text with the code I use, including the # symbol, if you want to follow along. Alternatively, you can view the Complete version of this notebook for the code used.
+```
+
+> **TA Comment**: The test has the matched pairs feature set to `FALSE` by default. If we add the arguement `paired = TRUE` inside the function, then we could do a paired $t$-test.
+
+With a $p$-value of 37.47%, the test results support my opinion that there is no relationship between the variables.
+
+> **TA Comment**: When I have students submit their lab report to Canvas, I have them Knit the document at the end, but they click the Knit menu and choose Knit to PDF and upload the PDF that is created.
+
+### Workshop Conclusion
+
+There is much more computation to the statistical component MATH 80 such as linear regression, but I hope this gives you a glimpse at how Tidyverse will be used throughout the semester. There is a version of this R Markdown file with all the code missing, if you want to practice what I demonstrated or pick other variables from the FIFA20 data set.
+
+Do you want to learn more? Here are a few follow up resources.
+
+* [R Markdown Tutorial](https://rmarkdown.rstudio.com/lesson-1.html) - RStudio has a tutorial page on using R Markdown that gives you more insight about the formating that I've done to this document to make it look and run the way it does.
+* [R for Data Science](https://r4ds.had.co.nz/) - A Standard Text for Exploratory Data Analysis with Tidyverse.
+* [DataCamp](https://datacamp.com/groups/shared_links/a165a2cb0d34fe5ff45c7203df7cdace81343830a642719f1ef7a5ddb2011424) - I've obtained free access for us to be able to engage with relatively short courses that teach you how to use R, Python, and Google Sheets. I have a couple assignment courses for you to work on where you learn the basics of R, Tidyverse, and Statistics with these langauges. I can add access to other DataCamp courses, just let me what you want to complete.
